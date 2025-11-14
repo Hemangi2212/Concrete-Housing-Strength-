@@ -2,13 +2,33 @@ import streamlit as st
 import numpy as np
 import joblib
 
+st.set_page_config(page_title="Concrete Strength Predictor", layout="wide")
+
 # ----------------------------
-# PAGE CONFIG
+# CUSTOM CSS FOR MODERN UI
 # ----------------------------
-st.set_page_config(
-    page_title="Concrete Strength Prediction",
-    layout="centered",
-)
+st.markdown("""
+<style>
+
+body {
+    background-color: #0d1117;
+    color: white;
+}
+
+.main-container {
+    background-color: #161b22;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);
+}
+
+input {
+    border-radius: 10px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 
 # ----------------------------
 # LOAD MODEL
@@ -19,51 +39,67 @@ def load_model():
 
 model = load_model()
 
-# ----------------------------
-# APP HEADER
-# ----------------------------
-st.markdown(
-    """
-    <h2 style='text-align:center; color:#4A4A4A;'>
-        🧱 Concrete Compressive Strength Predictor
-    </h2>
-    <p style='text-align:center; color:gray;'>
-        Enter material quantities to predict concrete strength
-    </p>
-    """,
-    unsafe_allow_html=True
-)
 
 # ----------------------------
-# SIDEBAR INPUTS
+# HEADER SECTION
 # ----------------------------
-st.sidebar.header("🔧 Input Features")
+st.markdown("<h1 style='text-align:center; color:#ffb86c;'>🧱 Concrete Compressive Strength Predictor</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; color:#c9d1d9;'>Enter material proportions and get instant strength prediction.</p>", unsafe_allow_html=True)
 
-cement = st.sidebar.number_input("Cement (kg/m³)", 0.0, 600.0, 200.0)
-slag = st.sidebar.number_input("Blast Furnace Slag (kg/m³)", 0.0, 360.0, 50.0)
-flyash = st.sidebar.number_input("Fly Ash (kg/m³)", 0.0, 200.0, 30.0)
-water = st.sidebar.number_input("Water (kg/m³)", 0.0, 250.0, 150.0)
-superplasticizer = st.sidebar.number_input("Superplasticizer (kg/m³)", 0.0, 40.0, 5.0)
-coarse_agg = st.sidebar.number_input("Coarse Aggregate (kg/m³)", 500.0, 1200.0, 900.0)
-fine_agg = st.sidebar.number_input("Fine Aggregate (kg/m³)", 300.0, 1000.0, 700.0)
-age = st.sidebar.number_input("Age (days)", 1, 365, 28)
-
-# Combine inputs
-input_data = np.array([[cement, slag, flyash, water, superplasticizer, coarse_agg, fine_agg, age]])
+st.write("")
+st.write("")
 
 # ----------------------------
-# PREDICTION
+# INPUT FORM (CENTERED)
 # ----------------------------
-st.markdown("## 🔍 Prediction")
+with st.container():
+    st.markdown("<div class='main-container'>", unsafe_allow_html=True)
 
-if st.button("Predict Strength"):
-    pred = model.predict(input_data)[0]
-    st.success(f"💪 Predicted Concrete Strength: **{pred:.2f} MPa**")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        cement = st.number_input("Cement (kg/m³)", 0.0, 600.0, 200.0)
+        slag = st.number_input("Blast Furnace Slag (kg/m³)", 0.0, 360.0, 50.0)
+        flyash = st.number_input("Fly Ash (kg/m³)", 0.0, 200.0, 30.0)
+        water = st.number_input("Water (kg/m³)", 0.0, 250.0, 150.0)
+
+    with col2:
+        superplasticizer = st.number_input("Superplasticizer (kg/m³)", 0.0, 40.0, 5.0)
+        coarse_agg = st.number_input("Coarse Aggregate (kg/m³)", 500.0, 1200.0, 900.0)
+        fine_agg = st.number_input("Fine Aggregate (kg/m³)", 300.0, 1000.0, 700.0)
+        age = st.number_input("Age (days)", 1, 365, 28)
+
+    st.write("")
+    st.write("")
+
+    input_data = np.array([[cement, slag, flyash, water, superplasticizer, coarse_agg, fine_agg, age]])
+
+    center = st.columns([4, 2, 4])[1]  
+    with center:
+        if st.button("🔍 Predict Strength", use_container_width=True):
+            pred = model.predict(input_data)[0]
+            st.success(f"💪 Predicted Concrete Strength: {pred:.2f} MPa")
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+st.write("")
+st.write("")
 
 # ----------------------------
-# FOOTER
+# FOOTER WITH YOUR DETAILS
 # ----------------------------
-st.markdown(
-    "<hr><p style='text-align:center; color:grey;'>Made with ❤️ in Streamlit</p>",
-    unsafe_allow_html=True
-)
+st.markdown("""
+<hr>
+
+<h3 style='text-align:center; color:#58a6ff;'>👩‍💻 Developer Info</h3>
+
+<p style='text-align:center;'>
+<b>Name:</b> Hemangi Ransing <br>
+<b>Mobile:</b> +91-XXXXXXXXXX <br>
+<b>Email:</b> yourmail@gmail.com <br>
+<b>LinkedIn:</b> <a href='https://www.linkedin.com/in/your-linkedin/' target='_blank'>Click Here</a>
+</p>
+
+<p style='text-align:center; color:#8b949e;'>Made with ❤️ using Streamlit</p>
+""", unsafe_allow_html=True)
