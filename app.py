@@ -96,9 +96,9 @@ st.markdown("""
 
 <p style='text-align:center;'>
 <b>Name:</b> Hemangi Ransing <br>
-<b>Mobile:</b> +91-XXXXXXXXXX <br>
-<b>Email:</b> yourmail@gmail.com <br>
-<b>LinkedIn:</b> <a href='https://www.linkedin.com/in/your-linkedin/' target='_blank'>Click Here</a>
+<b>Mobile:</b> +91-8767509860 <br>
+<b>Email:</b> ransinghemangi@gmail.com <br>
+<b>LinkedIn:</b> <a href='www.linkedin.com/in/hemangi-ransing' target='_blank'>Click Here</a>
 </p>
 
 <p style='text-align:center; color:#8b949e;'>Made with ❤️ using Streamlit</p>
