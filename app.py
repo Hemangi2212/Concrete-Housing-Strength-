@@ -1,13 +1,12 @@
 import streamlit as st
 import numpy as np
-import pandas as pd
 import joblib
 
 # ----------------------------
 # PAGE CONFIG
 # ----------------------------
 st.set_page_config(
-    page_title="Prediction App",
+    page_title="Concrete Strength Prediction",
     layout="centered",
 )
 
@@ -26,48 +25,45 @@ model = load_model()
 st.markdown(
     """
     <h2 style='text-align:center; color:#4A4A4A;'>
-        🚀 Machine Learning Prediction App
+        🧱 Concrete Compressive Strength Predictor
     </h2>
     <p style='text-align:center; color:gray;'>
-        Enter the values below to get predictions from the AdaBoost Model
+        Enter material quantities to predict concrete strength
     </p>
     """,
     unsafe_allow_html=True
 )
 
 # ----------------------------
-# INPUT SIDEBAR
+# SIDEBAR INPUTS
 # ----------------------------
 st.sidebar.header("🔧 Input Features")
 
-# 👉 Replace these with your model’s actual feature names
-# Example feature names (update as per your dataset)
-feature_1 = st.sidebar.number_input("Feature 1", 0.0, 1000.0, 10.0)
-feature_2 = st.sidebar.number_input("Feature 2", 0.0, 1000.0, 20.0)
-feature_3 = st.sidebar.number_input("Feature 3", 0.0, 1000.0, 30.0)
-feature_4 = st.sidebar.number_input("Feature 4", 0.0, 1000.0, 40.0)
+cement = st.sidebar.number_input("Cement (kg/m³)", 0.0, 600.0, 200.0)
+slag = st.sidebar.number_input("Blast Furnace Slag (kg/m³)", 0.0, 360.0, 50.0)
+flyash = st.sidebar.number_input("Fly Ash (kg/m³)", 0.0, 200.0, 30.0)
+water = st.sidebar.number_input("Water (kg/m³)", 0.0, 250.0, 150.0)
+superplasticizer = st.sidebar.number_input("Superplasticizer (kg/m³)", 0.0, 40.0, 5.0)
+coarse_agg = st.sidebar.number_input("Coarse Aggregate (kg/m³)", 500.0, 1200.0, 900.0)
+fine_agg = st.sidebar.number_input("Fine Aggregate (kg/m³)", 300.0, 1000.0, 700.0)
+age = st.sidebar.number_input("Age (days)", 1, 365, 28)
 
-# Make final input array
-input_data = np.array([[feature_1, feature_2, feature_3, feature_4]])
+# Combine inputs
+input_data = np.array([[cement, slag, flyash, water, superplasticizer, coarse_agg, fine_agg, age]])
 
 # ----------------------------
-# PREDICT BUTTON
+# PREDICTION
 # ----------------------------
 st.markdown("## 🔍 Prediction")
 
-if st.button("Predict"):
+if st.button("Predict Strength"):
     pred = model.predict(input_data)[0]
-    st.success(f"🎉 **Prediction: {pred}**")
-
-    # Optional probability
-    if hasattr(model, "predict_proba"):
-        proba = model.predict_proba(input_data)[0][1]
-        st.info(f"📊 Probability: {proba:.2f}")
+    st.success(f"💪 Predicted Concrete Strength: **{pred:.2f} MPa**")
 
 # ----------------------------
 # FOOTER
 # ----------------------------
 st.markdown(
-    "<hr><p style='text-align:center; color:grey;'>Made with ❤️ using Streamlit</p>",
+    "<hr><p style='text-align:center; color:grey;'>Made with ❤️ in Streamlit</p>",
     unsafe_allow_html=True
 )
